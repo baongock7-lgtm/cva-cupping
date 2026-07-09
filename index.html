@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#15120F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>CVA Cupping · 4 Forms</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#15120F; --surface:#1E1A16; --surface-2:#262019; --surface-3:#2E2620;
+    --border:#3A3129; --border-soft:#2A241D;
+    --text:#F3EDE4; --text-dim:#A79A8C; --text-faint:#7A6E60;
+    --accent:#C68A45; --accent-strong:#E0A868; --accent-ink:#1B1108;
+    --good:#8FA382; --good-ink:#122016;
+    --bad:#B0553D; --bad-ink:#2A1109;
+    --radius-lg:20px; --radius-md:14px; --radius-sm:10px;
+    --font-display:'Space Grotesk',sans-serif; --font-body:'Inter',sans-serif; --font-mono:'IBM Plex Mono',monospace;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--bg); color:var(--text); font-family:var(--font-body); -webkit-font-smoothing:antialiased; min-height:100vh;}
+  @media (prefers-reduced-motion:reduce){ *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;} }
+
+  .app-shell{max-width:480px; margin:0 auto; min-height:100vh; background:var(--bg); position:relative; padding-bottom:96px; border-left:1px solid var(--border-soft); border-right:1px solid var(--border-soft);}
+
+  .topbar{position:sticky; top:0; z-index:30; padding:calc(env(safe-area-inset-top,0px) + 14px) 20px 10px; background:linear-gradient(180deg, var(--bg) 75%, rgba(21,18,15,0));}
+  .topbar-row{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .brand{font-family:var(--font-display); font-weight:700; font-size:15px; letter-spacing:0.02em; color:var(--text); display:flex; align-items:center; gap:8px;}
+  .brand .mark{width:20px;height:20px;border-radius:50%; background:conic-gradient(var(--accent-strong), var(--accent), var(--accent-strong)); display:inline-block; flex:none;}
+  .sub{font-size:10.5px; color:var(--text-faint); letter-spacing:0.06em; text-transform:uppercase; margin-top:2px;}
+  .lang-toggle{display:flex; gap:2px; background:var(--surface-2); border:1px solid var(--border-soft); border-radius:999px; padding:3px; flex:none;}
+  .lang-btn{padding:5px 10px; border-radius:999px; font-family:var(--font-mono); font-weight:700; font-size:10.5px; color:var(--text-faint); cursor:pointer; transition:background .15s ease, color .15s ease;}
+  .lang-btn.active{background:var(--accent); color:var(--accent-ink);}
+
+  .tabbar{position:sticky; top:52px; z-index:25; display:flex; gap:4px; margin:2px 16px 14px; background:var(--surface); border:1px solid var(--border-soft); border-radius:999px; padding:4px; box-shadow:0 10px 22px -14px rgba(0,0,0,0.6);}
+  .tab{flex:1; text-align:center; padding:9px 2px; border-radius:999px; font-family:var(--font-display); font-weight:600; font-size:10.5px; letter-spacing:0.01em; color:var(--text-faint); cursor:pointer; position:relative; transition:background .15s ease, color .15s ease;}
+  .tab.active{background:var(--accent); color:var(--accent-ink);}
+  .tab .dot{position:absolute; top:4px; right:6px; width:5px; height:5px; border-radius:50%; background:var(--good); display:none;}
+
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .section{margin:0 16px 14px; padding:16px; background:var(--surface); border:1px solid var(--border-soft); border-radius:var(--radius-md);}
+  .section-title{font-family:var(--font-display); font-weight:600; font-size:13px; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-dim); margin:0 0 12px;}
+  .mini-label{display:block; font-size:11.5px; color:var(--text-faint); margin:10px 0 6px;}
+
+  .guide-box{background:var(--surface-2); border:1px solid var(--border); border-left:3px solid var(--accent); border-radius:var(--radius-sm); padding:12px 14px; margin-bottom:14px;}
+  .guide-head{display:flex; align-items:center; justify-content:space-between; cursor:pointer; gap:8px;}
+  .guide-head .label{font-family:var(--font-display); font-weight:700; font-size:11.5px; letter-spacing:0.04em; text-transform:uppercase; color:var(--accent-strong);}
+  .guide-chevron{font-size:12px; color:var(--text-faint); transition:transform .2s ease; flex:none;}
+  .guide-chevron.open{transform:rotate(180deg);}
+  .guide-body{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+  .guide-body.open{max-height:420px; margin-top:10px;}
+  .guide-body p{margin:0; font-size:12.5px; line-height:1.55; color:var(--text-dim);}
+  .legend-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px 8px;}
+  .legend-item{display:flex; align-items:flex-start; gap:6px;}
+  .legend-num{flex:none; width:17px; height:17px; border-radius:50%; background:var(--good); color:var(--good-ink); font-family:var(--font-mono); font-weight:700; font-size:9.5px; display:flex; align-items:center; justify-content:center; margin-top:1px;}
+  .legend-text{font-size:10px; line-height:1.3; color:var(--text-dim);}
+  .legend-vi{display:block; color:var(--text-faint); font-size:9px; margin-top:1px;}
+
+  .field{margin-bottom:12px;}
+  .field:last-child{margin-bottom:0;}
+  .field label{display:block; font-size:11.5px; color:var(--text-faint); margin-bottom:5px;}
+  .field input, .field textarea, .field select{width:100%; background:var(--surface-2); border:1px solid var(--border); border-radius:var(--radius-sm); color:var(--text); font-family:var(--font-body); font-size:15px; padding:10px 12px; outline:none;}
+  .field input:focus, .field textarea:focus, .field select:focus{border-color:var(--accent);}
+  .field textarea{resize:vertical; min-height:64px; line-height:1.4;}
+  .field-row{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+
+  .mode-toggle{display:flex; gap:4px; background:var(--surface-2); border:1px solid var(--border-soft); border-radius:999px; padding:4px; margin-bottom:16px;}
+  .mode-btn{flex:1; text-align:center; padding:8px 4px; border-radius:999px; font-family:var(--font-display); font-weight:600; font-size:11.5px; color:var(--text-faint); cursor:pointer; transition:background .15s ease, color .15s ease;}
+  .mode-btn.active{background:var(--accent); color:var(--accent-ink);}
+
+  .review-score-row{display:flex; align-items:flex-end; justify-content:space-between; gap:10px;}
+  .score-label{font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-faint);}
+  .score-value{font-family:var(--font-mono); font-weight:600; font-size:2.4rem; line-height:1; color:var(--text); font-variant-numeric:tabular-nums; letter-spacing:-0.01em; margin-top:4px;}
+  .grade-pill{font-family:var(--font-body); font-weight:700; font-size:11px; letter-spacing:0.04em; padding:6px 10px; border-radius:999px; white-space:nowrap;}
+  .grade-pill.pass{background:var(--good); color:var(--good-ink);}
+  .grade-pill.fail{background:var(--bad); color:var(--bad-ink);}
+  .score-meta{display:flex; gap:16px; padding-top:12px; border-top:1px solid var(--border-soft);}
+  .score-meta .item{font-family:var(--font-mono); font-size:13px; color:var(--text-dim);}
+  .score-meta .item b{color:var(--text); font-weight:600;}
+
+  .attr-row{padding:12px 0; border-bottom:1px solid var(--border-soft);}
+  .attr-row:last-child{border-bottom:none; padding-bottom:0;}
+  .attr-row:first-child{padding-top:0;}
+  .attr-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:9px;}
+  .attr-name{font-family:var(--font-display); font-weight:600; font-size:14px; letter-spacing:0.01em;}
+  .attr-name .vi{display:block; font-family:var(--font-body); font-weight:400; font-size:11px; color:var(--text-faint); margin-top:1px;}
+  .attr-val{font-family:var(--font-mono); font-weight:600; font-size:15px; color:var(--accent-strong);}
+  .circle-group{display:flex; gap:5px; justify-content:space-between;}
+  .circle{flex:1; aspect-ratio:1; max-width:34px; border-radius:50%; border:1px solid var(--border); background:var(--surface-2); color:var(--text-dim); font-family:var(--font-mono); font-weight:600; font-size:12.5px; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background .12s ease, color .12s ease, border-color .12s ease, transform .08s ease;}
+  .circle:active{transform:scale(0.92);}
+  .circle.active{background:var(--accent); border-color:var(--accent); color:var(--accent-ink);}
+  .scale-hint{display:flex; justify-content:space-between; margin-top:5px; font-size:9px; color:var(--text-faint); letter-spacing:0.03em;}
+
+  .cup-group{display:flex; gap:8px;}
+  .cup-btn{flex:1; height:44px; border-radius:var(--radius-sm); border:1px solid var(--border); background:var(--surface-2); color:var(--text-dim); font-family:var(--font-mono); font-weight:600; font-size:13px; display:flex; align-items:center; justify-content:center; gap:5px; cursor:pointer; transition:background .12s ease, color .12s ease, border-color .12s ease;}
+  .cup-btn svg{width:14px; height:14px; opacity:0.8;}
+  .cup-btn.active.uniform{background:var(--accent); border-color:var(--accent); color:var(--accent-ink);}
+  .cup-btn.active.defect{background:var(--bad); border-color:var(--bad); color:#F6E7E1;}
+
+  .cata-grid{display:flex; flex-wrap:wrap; gap:6px;}
+  .cata-chip{padding:6px 11px; border-radius:999px; border:1px solid var(--border); background:var(--surface-2); color:var(--text-dim); font-size:11.5px; font-weight:600; cursor:pointer; transition:background .12s ease, color .12s ease, border-color .12s ease;}
+  .cata-chip.active{background:var(--accent); border-color:var(--accent); color:var(--accent-ink);}
+  .cata-grid[data-variant="bad"] .cata-chip.active{background:var(--bad); border-color:var(--bad); color:#F6E7E1;}
+
+  input[type=range].intensity{-webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:999px; background:linear-gradient(90deg, #33291C, var(--accent) 55%, var(--accent-strong)); outline:none; margin:6px 0; cursor:pointer;}
+  input[type=range].intensity::-webkit-slider-thumb{-webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:var(--text); border:3px solid var(--accent); cursor:pointer; margin-top:-7px;}
+  input[type=range].intensity::-moz-range-track{height:6px; border-radius:999px; background:linear-gradient(90deg, #33291C, var(--accent) 55%, var(--accent-strong));}
+  input[type=range].intensity::-moz-range-thumb{width:20px; height:20px; border-radius:50%; background:var(--text); border:3px solid var(--accent); cursor:pointer;}
+  .slider-track-labels{display:flex; justify-content:space-between; margin-top:4px; font-size:9px; color:var(--text-faint); text-transform:uppercase; letter-spacing:0.04em;}
+
+  .stepper-row{display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border-soft); gap:8px;}
+  .stepper-row:last-child{border-bottom:none;}
+  .stepper-label{flex:1; min-width:0;}
+  .stepper-label .name{font-size:12.5px; font-weight:600; color:var(--text);}
+  .stepper-label .ratio{font-size:10px; color:var(--text-faint);}
+  .stepper-ctrl{display:flex; align-items:center; gap:8px; flex:none;}
+  .stepper-btn{width:28px; height:28px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--text); font-size:16px; display:flex; align-items:center; justify-content:center; cursor:pointer; user-select:none;}
+  .stepper-val{width:24px; text-align:center; font-family:var(--font-mono); font-weight:600; font-size:13px;}
+  .stepper-eq{width:46px; text-align:right; font-family:var(--font-mono); font-size:11px; color:var(--accent-strong); flex:none;}
+  .totals-row{display:flex; justify-content:space-between; padding-top:10px; margin-top:6px; border-top:1px solid var(--border-soft); font-family:var(--font-mono); font-weight:600; font-size:13px;}
+
+  .accordion-head{display:flex; justify-content:space-between; align-items:center; cursor:pointer; padding:6px 0;}
+  .accordion-body{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+  .accordion-body.open{max-height:520px;}
+  .sieve-row{display:grid; grid-template-columns:44px 1fr 64px; gap:8px; align-items:center; padding:6px 0;}
+  .sieve-row div:first-child{font-family:var(--font-mono); font-size:12px; color:var(--text-dim);}
+  .sieve-pct{font-family:var(--font-mono); font-size:12px; color:var(--accent-strong); text-align:right;}
+
+  .sb-row{display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--border-soft);}
+  .sb-row:last-child{border-bottom:none;}
+  .sb-label{flex:1; background:transparent; border:none; color:var(--text); font-family:var(--font-display); font-weight:600; font-size:14px; padding:6px 8px; border-radius:8px; min-width:0;}
+  .sb-label:focus{background:var(--surface-2); outline:none;}
+  .sb-score-click{display:flex; align-items:center; gap:8px; cursor:pointer;}
+  .sb-score{font-family:var(--font-mono); font-weight:600; font-size:16px; color:var(--accent-strong); flex:none; min-width:58px; text-align:right;}
+  .sb-pill{flex:none; font-size:9.5px; font-weight:700; padding:3px 7px; border-radius:999px; letter-spacing:0.03em;}
+  .sb-pill.pass{background:var(--good); color:var(--good-ink);}
+  .sb-pill.fail{background:var(--surface-2); color:var(--text-faint); border:1px solid var(--border);}
+  .sb-del{flex:none; width:26px; height:26px; border-radius:7px; display:flex; align-items:center; justify-content:center; color:var(--text-faint); font-size:12px; cursor:pointer; background:var(--surface-2); border:1px solid var(--border);}
+  .sb-add{text-align:center; padding:11px; margin-top:8px; border:1px dashed var(--border); border-radius:var(--radius-sm); color:var(--accent-strong); font-weight:700; font-size:13px; cursor:pointer;}
+
+  .step-nav-head{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+  .step-nav-btn{flex:none; width:38px; height:38px; border-radius:50%; border:1px solid var(--border); background:var(--surface-2); color:var(--text); font-size:18px; display:flex; align-items:center; justify-content:center; cursor:pointer;}
+  .step-nav-btn:disabled{opacity:0.3; cursor:default;}
+  .step-nav-label{flex:1; text-align:center; min-width:0;}
+  .step-nav-label #stepLabel{font-family:var(--font-display); font-weight:700; font-size:12.5px; letter-spacing:0.03em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .step-dots{display:flex; justify-content:center; gap:5px; margin-top:12px;}
+  .step-dot{width:6px; height:6px; border-radius:50%; background:var(--border); cursor:pointer; transition:width .15s ease, background .15s ease;}
+  .step-dot.active{background:var(--accent); width:16px; border-radius:4px;}
+
+  .sample-rate-row{padding:12px 0; border-bottom:1px solid var(--border-soft);}
+  .sample-rate-row:last-child{border-bottom:none;}
+  .sample-rate-label{font-family:var(--font-display); font-weight:600; font-size:13px; color:var(--text-dim); margin-bottom:7px;}
+
+  .sample-card{padding:14px 0; border-bottom:1px solid var(--border-soft);}
+  .sample-card:last-child{border-bottom:none;}
+  .sample-card-head{font-family:var(--font-display); font-weight:700; font-size:14px; color:var(--accent-strong); margin-bottom:8px;}
+
+  .actions{display:flex; gap:10px; margin:18px 16px 0;}
+  .btn{flex:1; padding:14px; border-radius:var(--radius-sm); border:1px solid transparent; font-family:var(--font-body); font-weight:700; font-size:14.5px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:opacity .12s ease, transform .08s ease;}
+  .btn:active{transform:scale(0.98);}
+  .btn-primary{background:var(--accent); color:var(--accent-ink);}
+  .btn-secondary{background:transparent; border-color:var(--border); color:var(--text-dim);}
+
+  .history-item{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 4px; border-bottom:1px solid var(--border-soft);}
+  .history-item:last-child{border-bottom:none;}
+  .history-main{flex:1; min-width:0; cursor:pointer;}
+  .history-sample{font-family:var(--font-display); font-weight:600; font-size:14px; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .history-date{font-size:11px; color:var(--text-faint); margin-top:2px;}
+  .history-score{font-family:var(--font-mono); font-weight:600; font-size:14px; color:var(--accent-strong); flex:none; text-align:right; max-width:120px;}
+  .history-del{flex:none; width:30px; height:30px; border-radius:8px; border:1px solid var(--border); background:var(--surface-2); color:var(--text-faint); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:13px;}
+  .history-del.confirm{background:var(--bad); border-color:var(--bad); color:#fff;}
+  .empty-state{padding:22px 4px; text-align:center; color:var(--text-faint); font-size:13px;}
+
+  .toast{position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px); background:var(--surface-3); border:1px solid var(--border); color:var(--text); padding:11px 18px; border-radius:999px; font-size:13px; font-weight:600; opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease; z-index:50; box-shadow:0 10px 24px -10px rgba(0,0,0,0.7); max-width:90%; text-align:center;}
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+
+  <div class="topbar">
+    <div class="topbar-row">
+      <div class="brand"><span class="mark"></span>CVA Cupping</div>
+      <div class="lang-toggle" id="langToggle">
+        <div class="lang-btn active" data-lang="vi">VI</div>
+        <div class="lang-btn" data-lang="en">EN</div>
+      </div>
+    </div>
+    <div class="sub" data-i18n="topbarSub">4 forms · SCA Coffee Value Assessment</div>
+  </div>
+
+  <div class="section" style="margin-top:2px;">
+    <div class="section-title" data-i18n="metaTitle">Thông tin mẫu chung</div>
+    <div class="field-row">
+      <div class="field"><label data-i18n="metaSampleNo">Số mẫu / Sample No.</label><input type="text" id="sampleNo" data-i18n-ph="metaSampleNoPh" placeholder="VD: 01"></div>
+      <div class="field"><label data-i18n="metaDate">Ngày</label><input type="date" id="sampleDate"></div>
+    </div>
+    <div class="field"><label data-i18n="metaCupper">Người chấm / Cupper</label><input type="text" id="cupperName" data-i18n-ph="metaCupperPh" placeholder="Tên của bạn"></div>
+    <div class="field"><label data-i18n="metaPurpose">Mục đích / Purpose</label><input type="text" id="purpose" data-i18n-ph="metaPurposePh" placeholder="VD: Kiểm định lô hàng, QC..."></div>
+    <div class="mini-label" data-i18n="metaCaption" style="margin-bottom:0;">Dùng cho form Vật lý / Mô tả / Ngoại lai. Form Cảm nhận quản lý danh sách mẫu riêng bên dưới để cupping nhiều mẫu song song.</div>
+  </div>
+
+  <div class="tabbar" id="tabbar">
+    <div class="tab" data-tab="physical"><span data-i18n="tabPhysical">VẬT LÝ</span><span class="dot"></span></div>
+    <div class="tab" data-tab="descriptive"><span data-i18n="tabDescriptive">MÔ TẢ</span><span class="dot"></span></div>
+    <div class="tab active" data-tab="affective"><span data-i18n="tabAffective">CẢM NHẬN</span><span class="dot"></span></div>
+    <div class="tab" data-tab="extrinsic"><span data-i18n="tabExtrinsic">NGOẠI LAI</span><span class="dot"></span></div>
+  </div>
+
+  <div class="panel" id="panel-physical"></div>
+
+  <div class="panel" id="panel-descriptive"></div>
+
+  <div class="panel active" id="panel-affective">
+    <div class="section" id="scoreboardSection">
+      <div class="section-title" data-i18n="affScoreboardTitle">Bảng điểm phiên cupping</div>
+      <div id="scoreboard"></div>
+    </div>
+
+    <div class="section">
+      <div class="guide-box">
+        <div class="guide-head" data-guide-toggle="affective">
+          <span class="label">💡 <span data-i18n="guideLabel">Hướng dẫn</span></span>
+          <span class="guide-chevron" id="chev_affective">▾</span>
+        </div>
+        <div class="guide-body" id="guideBody_affective"><p data-i18n="guideAffective"></p></div>
+      </div>
+      <div class="guide-box" style="border-left-color:var(--good); margin-bottom:0;">
+        <div class="guide-head" id="legendToggle">
+          <span class="label">📏 <span data-i18n="scaleLegendTitle">Thang điểm 9 mức (theo CVA)</span></span>
+          <span class="guide-chevron open" id="legendChevron">▾</span>
+        </div>
+        <div class="guide-body open" id="legendBody">
+          <p data-i18n="scaleLegendCaption" style="margin-bottom:10px;"></p>
+          <div class="legend-grid" id="scaleLegend"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="mode-toggle" id="modeToggle">
+        <div class="mode-btn active" data-mode="step" data-i18n="affModeStep">Theo bước</div>
+        <div class="mode-btn" data-mode="sample" data-i18n="affModeSample">Theo mẫu</div>
+      </div>
+
+      <div id="stepModeWrap">
+        <div class="step-nav-head">
+          <button class="step-nav-btn" id="prevStepBtn">‹</button>
+          <div class="step-nav-label">
+            <div id="stepLabel">STEP 1/9 · FRAGRANCE</div>
+            <div id="stepSub" class="mini-label" style="margin:2px 0 0;">Hương khô</div>
+          </div>
+          <button class="step-nav-btn" id="nextStepBtn">›</button>
+        </div>
+        <div class="step-dots" id="stepDots"></div>
+        <div id="stepContent" style="margin-top:14px;"></div>
+      </div>
+
+      <div id="sampleModeWrap" style="display:none;">
+        <div class="mini-label" data-i18n="affReviewHint" style="margin-top:0;">Chọn mẫu để rà lại toàn bộ 8 mục cùng lúc</div>
+        <div class="cata-grid" id="reviewSampleChips" style="margin-bottom:14px;"></div>
+        <div id="reviewContent"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-extrinsic"></div>
+
+  <div class="actions">
+    <button class="btn btn-secondary" id="newBtn" data-i18n="actionsNew">Mẫu mới</button>
+    <button class="btn btn-primary" id="saveBtn" data-i18n="actionsSave">Lưu phiên này</button>
+  </div>
+
+  <div class="section" style="margin-top:20px;">
+    <div class="section-title" data-i18n="historyTitle">Lịch sử đã lưu</div>
+    <div id="historyList"><div class="empty-state">…</div></div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(async function(){
+  const I18N = {
+    vi: {
+      topbarSub: '4 form · SCA Coffee Value Assessment',
+      metaTitle: 'Thông tin mẫu chung', metaSampleNo: 'Số mẫu / Sample No.', metaSampleNoPh: 'VD: 01',
+      metaDate: 'Ngày', metaCupper: 'Người chấm / Cupper', metaCupperPh: 'Tên của bạn',
+      metaPurpose: 'Mục đích / Purpose', metaPurposePh: 'VD: Kiểm định lô hàng, QC...',
+      metaCaption: 'Dùng cho form Vật lý / Mô tả / Ngoại lai. Form Cảm nhận quản lý danh sách mẫu riêng bên dưới để cupping nhiều mẫu song song.',
+      tabPhysical: 'VẬT LÝ', tabDescriptive: 'MÔ TẢ', tabAffective: 'CẢM NHẬN', tabExtrinsic: 'NGOẠI LAI',
+      guideLabel: 'Hướng dẫn',
+      guidePhysical: 'Cân 350g mẫu cà phê nhân xanh, so màu trên nền đen. Đếm lỗi theo Category 1 (tỉ lệ quy đổi 1:1 đến 5:1) và Category 2 (3:1 đến 10:1) — hệ thống tự tính full defect equivalent. Đo độ ẩm bằng máy hiệu chuẩn ISO 6673. Sàng kích cỡ hạt qua lưới #13–#19.',
+      guideDescriptive: 'Đánh giá khách quan, không thiên vị. Ngửi bã khô để chấm Fragrance; ngửi sau khi pha & phá váng để chấm Aroma. Kéo thanh cường độ 0–15 cho từng mục (chỉ phản ánh độ mạnh, không phải chất lượng). Chọn tối đa 5 mô tả cho Fragrance/Aroma và Flavor/Aftertaste, tối đa 2 cho Main Tastes và Mouthfeel. Acidity & Sweetness chỉ ghi mô tả tự do.',
+      guideAffective: 'Đây là đánh giá chủ quan — sở thích của bạn hoặc thị trường mục tiêu. Thêm tất cả mẫu vào phiên, rồi chấm THEO BƯỚC: xong Fragrance cho mọi mẫu mới sang Aroma, cứ thế đến Overall — giống cupping thật trên bàn. Bước cuối đánh dấu cốc không đồng nhất (−2đ/cốc) và cốc lỗi (−4đ/cốc). Dùng "Theo mẫu" để rà lại điểm 1 mẫu bất kỳ.',
+      guideExtrinsic: 'Ghi lại thuộc tính ngoại lai (không phải cảm quan) làm tăng giá trị cà phê: nguồn gốc canh tác, sơ chế, giao dịch, chứng nhận. Nên điền SAU KHI hoàn tất Vật lý/Mô tả/Cảm nhận để tránh gây thiên vị cho người chấm.',
+      scaleLegendTitle: 'Thang điểm 9 mức (theo CVA)',
+      scaleLegendCaption: 'Bộ nhãn này giống hệt nhau cho cả 8 mục (Fragrance, Aroma, Flavor... Overall) — CVA không quy định mô tả hương vị riêng theo từng điểm (VD: không có "chua 6 điểm = vị chanh"). Điểm số phản ánh mức bạn thích/đánh giá cao mục đó đến đâu so với mức trung tính (5), không phải cường độ khách quan.',
+      lowLabel:'THẤP', medLabel:'TRUNG BÌNH', highLabel:'CAO', selectPlaceholder:'— Chọn —',
+      physicalColorTitle: 'Màu hạt xanh (Green Bean Color)', physicalCat1Title: 'Lỗi vật lý — Category 1', physicalCat1TotalLabel: 'Tổng Category 1',
+      physicalCat2Title: 'Lỗi vật lý — Category 2', physicalCat2TotalLabel: 'Tổng Category 2', physicalTotalGreenLabel: 'TỔNG LỖI XANH',
+      physicalMoistureSizeTitle: 'Độ ẩm & Kích cỡ hạt', physicalMoistureLabel: 'Độ ẩm (%) — máy đo hiệu chuẩn ISO 6673', physicalMoisturePh: 'VD: 10.5',
+      physicalSieveToggle: 'Phân bố sàng #13–#19', physicalSieveTotalLabel: 'Tổng khối lượng',
+      physicalNotesTitle: 'Ghi chú', physicalNotesPh: 'Ghi chú đánh giá vật lý...',
+      descRoastTitle: 'Roast Level', descRoastLabel: 'Mức rang', descFATitle: 'Fragrance / Aroma', descFaaTitle: 'Flavor / Aftertaste',
+      descAcidityTitle: 'Acidity', descSweetnessTitle: 'Sweetness', descMouthfeelTitle: 'Mouthfeel',
+      descCataMax5: 'Mô tả (tối đa 5)', descRetronasalMax5: 'Mô tả retronasal (tối đa 5)', descMainTastesMax2: 'Main Tastes (tối đa 2)', descMouthfeelMax2: 'Đặc điểm (tối đa 2)',
+      descNotesLabel: 'Ghi chú', descAcidityFreeLabel: 'Mô tả tự do (juicy, tart, bright, winey...)', descSweetnessFreeLabel: 'Mô tả tự do',
+      affScoreboardTitle: 'Bảng điểm phiên cupping', affAddSample: '+ Thêm mẫu vào phiên', affModeStep: 'Theo bước', affModeSample: 'Theo mẫu',
+      affReviewHint: 'Chọn mẫu để rà lại toàn bộ 8 mục cùng lúc', affStepPrefix: 'BƯỚC',
+      affNonUniformTitle: 'Non-Uniform Cups', affDefectiveTitle: 'Defective Cups', affNotesPh: 'Ghi chú cho mẫu này...',
+      affScorePrefix: 'Final score —', affSpecialty: 'SPECIALTY', affBelowThreshold: 'DƯỚI NGƯỠNG',
+      affRawLabel: 'Raw', affNonUniformCountLabel: 'Không đồng nhất', affDefectiveCountLabel: 'Cốc lỗi', affNoSamples: 'Chưa có mẫu nào trong phiên.', affSamplePh: 'Tên mẫu',
+      extFarmingTitle: 'Farming', extCountry: 'Country', extRegion: 'Region', extFarm: 'Farm / Co-op', extProducer: 'Producer(s)',
+      extSpecies: 'Species', extVariety: 'Variety', extHarvest: 'Harvest date/year', extFarmingOtherLabel: 'Khác', extFarmingOtherPh: 'Altitude, GPS, pruning, shading...',
+      extProcessingTitle: 'Processing', extProcessor: 'Processor(s)', extWetMill: 'Wet Mill / Station', extDryMill: 'Dry Mill', extProcessTypeLabel: 'Process Type',
+      extProcessOtherLabel: 'Chi tiết lên men / fermentation', extProcessOtherPh: 'VD: Anaerobic, carbonic maceration, co-fermentation...',
+      extTradingTitle: 'Trading', extSizeGrade: 'Size Grade', extSizeGradePh: 'AA, Supremo...', extOtherGrade: 'Other Grade', extOtherGradePh: 'SHB, SHG, EP...',
+      extIco: 'ICO Number', extTradingOtherLabel: 'Khác', extTradingOtherPh: 'Trading model, farmgate price, FOB, premium...',
+      extCertTitle: 'Certifications', extCertOtherLabel: 'Khác', extCertOtherPh: 'SMBC Bird Friendly, Nespresso AAA...',
+      actionsNew: 'Mẫu mới', actionsSave: 'Lưu phiên này', historyTitle: 'Lịch sử đã lưu', historyEmpty: 'Chưa có phiên nào được lưu.',
+      historyLoadError: 'Không tải được lịch sử.', historyNoName: 'Không tên',
+      toastMaxChoice: 'Tối đa {max} lựa chọn', toastSaveFail: 'Lưu thất bại, thử lại.', toastSaved: 'Đã lưu {n} mẫu trong phiên này',
+      toastSaveError: 'Lỗi khi lưu.', toastNewSession: 'Đã tạo phiên mới', toastLoaded: 'Đã tải phiên #{id}', toastDeleteError: 'Không thể xoá.'
+    },
+    en: {
+      topbarSub: '4 forms · SCA Coffee Value Assessment',
+      metaTitle: 'General Sample Info', metaSampleNo: 'Sample No.', metaSampleNoPh: 'e.g., 01',
+      metaDate: 'Date', metaCupper: 'Cupper', metaCupperPh: 'Your name',
+      metaPurpose: 'Purpose', metaPurposePh: 'e.g., batch verification, QC...',
+      metaCaption: 'Used by the Physical / Descriptive / Extrinsic forms. The Affective form keeps its own sample list below for cupping several samples in parallel.',
+      tabPhysical: 'PHYSICAL', tabDescriptive: 'DESCRIPTIVE', tabAffective: 'AFFECTIVE', tabExtrinsic: 'EXTRINSIC',
+      guideLabel: 'Guide',
+      guidePhysical: 'Weigh a 350g green coffee sample and compare color against a black background. Count defects by Category 1 (1:1 to 5:1 ratio) and Category 2 (3:1 to 10:1 ratio) — the app calculates full defect equivalents for you. Measure moisture with a meter calibrated to ISO 6673. Sieve bean size across screens #13–#19.',
+      guideDescriptive: 'Assess objectively, without bias. Smell the dry grounds to rate Fragrance; smell after brewing and breaking the crust to rate Aroma. Drag the 0–15 intensity slider for each section (it reflects strength, not quality). Pick up to 5 descriptors for Fragrance/Aroma and Flavor/Aftertaste, up to 2 for Main Tastes and Mouthfeel. Acidity & Sweetness use free-text descriptors only.',
+      guideAffective: 'This is a subjective assessment — your own preference or a target market\'s. Add every sample to the session, then rate STEP BY STEP: finish Fragrance for all samples before moving to Aroma, and so on through Overall — mirroring a real cupping table. The last step marks non-uniform cups (−2 pts each) and defective cups (−4 pts each). Use "By sample" to review any single sample\'s full score.',
+      guideExtrinsic: 'Record extrinsic (non-sensory) attributes that add value to the coffee: farming origin, processing, trading and certifications. Fill this in AFTER completing Physical/Descriptive/Affective to avoid biasing the taster.',
+      scaleLegendTitle: '9-Point Scale (per CVA)',
+      scaleLegendCaption: 'This label set is identical for all 8 sections (Fragrance, Aroma, Flavor... Overall) — the CVA does not define separate flavor descriptions per point (e.g., there is no "acidity 6 = citrus-like"). The score reflects how much you like/value that section relative to neutral (5), not an objective intensity.',
+      lowLabel:'LOW', medLabel:'MEDIUM', highLabel:'HIGH', selectPlaceholder:'— Select —',
+      physicalColorTitle: 'Green Bean Color', physicalCat1Title: 'Physical Defects — Category 1', physicalCat1TotalLabel: 'Category 1 Total',
+      physicalCat2Title: 'Physical Defects — Category 2', physicalCat2TotalLabel: 'Category 2 Total', physicalTotalGreenLabel: 'TOTAL GREEN DEFECTS',
+      physicalMoistureSizeTitle: 'Moisture & Bean Size', physicalMoistureLabel: 'Moisture (%) — meter calibrated to ISO 6673', physicalMoisturePh: 'e.g., 10.5',
+      physicalSieveToggle: 'Screen size distribution #13–#19', physicalSieveTotalLabel: 'Total weight',
+      physicalNotesTitle: 'Notes', physicalNotesPh: 'Physical assessment notes...',
+      descRoastTitle: 'Roast Level', descRoastLabel: 'Roast level', descFATitle: 'Fragrance / Aroma', descFaaTitle: 'Flavor / Aftertaste',
+      descAcidityTitle: 'Acidity', descSweetnessTitle: 'Sweetness', descMouthfeelTitle: 'Mouthfeel',
+      descCataMax5: 'Descriptors (up to 5)', descRetronasalMax5: 'Retronasal descriptors (up to 5)', descMainTastesMax2: 'Main Tastes (up to 2)', descMouthfeelMax2: 'Characteristics (up to 2)',
+      descNotesLabel: 'Notes', descAcidityFreeLabel: 'Free descriptors (juicy, tart, bright, winey...)', descSweetnessFreeLabel: 'Free descriptors',
+      affScoreboardTitle: 'Session Scoreboard', affAddSample: '+ Add sample to session', affModeStep: 'By step', affModeSample: 'By sample',
+      affReviewHint: 'Pick a sample to review all 8 attributes at once', affStepPrefix: 'STEP',
+      affNonUniformTitle: 'Non-Uniform Cups', affDefectiveTitle: 'Defective Cups', affNotesPh: 'Notes for this sample...',
+      affScorePrefix: 'Final score —', affSpecialty: 'SPECIALTY', affBelowThreshold: 'BELOW THRESHOLD',
+      affRawLabel: 'Raw', affNonUniformCountLabel: 'Non-uniform', affDefectiveCountLabel: 'Defective cups', affNoSamples: 'No samples in this session yet.', affSamplePh: 'Sample name',
+      extFarmingTitle: 'Farming', extCountry: 'Country', extRegion: 'Region', extFarm: 'Farm / Co-op', extProducer: 'Producer(s)',
+      extSpecies: 'Species', extVariety: 'Variety', extHarvest: 'Harvest date/year', extFarmingOtherLabel: 'Other', extFarmingOtherPh: 'Altitude, GPS, pruning, shading...',
+      extProcessingTitle: 'Processing', extProcessor: 'Processor(s)', extWetMill: 'Wet Mill / Station', extDryMill: 'Dry Mill', extProcessTypeLabel: 'Process Type',
+      extProcessOtherLabel: 'Fermentation detail', extProcessOtherPh: 'e.g., anaerobic, carbonic maceration, co-fermentation...',
+      extTradingTitle: 'Trading', extSizeGrade: 'Size Grade', extSizeGradePh: 'AA, Supremo...', extOtherGrade: 'Other Grade', extOtherGradePh: 'SHB, SHG, EP...',
+      extIco: 'ICO Number', extTradingOtherLabel: 'Other', extTradingOtherPh: 'Trading model, farmgate price, FOB, premium...',
+      extCertTitle: 'Certifications', extCertOtherLabel: 'Other', extCertOtherPh: 'SMBC Bird Friendly, Nespresso AAA...',
+      actionsNew: 'New', actionsSave: 'Save this session', historyTitle: 'Saved History', historyEmpty: 'No sessions saved yet.',
+      historyLoadError: 'Could not load history.', historyNoName: 'Untitled',
+      toastMaxChoice: 'Up to {max} choices', toastSaveFail: 'Save failed, please try again.', toastSaved: 'Saved {n} sample(s) in this session',
+      toastSaveError: 'Error while saving.', toastNewSession: 'New session created', toastLoaded: 'Loaded session #{id}', toastDeleteError: 'Could not delete.'
+    }
+  };
+
+  let lang = 'vi';
+  function t(key){
+    const dict = I18N[lang] || I18N.vi;
+    if(dict && dict[key]!==undefined) return dict[key];
+    if(I18N.vi[key]!==undefined) return I18N.vi[key];
+    return key;
+  }
+
+  const ATTRS = [
+    {key:'fragrance', en:'Fragrance', vi:'Hương khô'},
+    {key:'aroma', en:'Aroma', vi:'Hương ướt'},
+    {key:'flavor', en:'Flavor', vi:'Hương vị'},
+    {key:'aftertaste', en:'Aftertaste', vi:'Hậu vị'},
+    {key:'acidity', en:'Acidity', vi:'Độ chua'},
+    {key:'sweetness', en:'Sweetness', vi:'Độ ngọt'},
+    {key:'mouthfeel', en:'Mouthfeel', vi:'Cấu trúc'},
+    {key:'overall', en:'Overall', vi:'Tổng thể'}
+  ];
+  const STEPS = ATTRS.concat([{key:'uniformity', en:'Uniformity & Defects', vi:'Đồng nhất & lỗi cảm quan'}]);
+  const SCALE_LABELS = [
+    {n:1, en:'Extremely low', vi:'Cực kỳ thấp'}, {n:2, en:'Very low', vi:'Rất thấp'}, {n:3, en:'Moderately low', vi:'Khá thấp'},
+    {n:4, en:'Slightly low', vi:'Hơi thấp'}, {n:5, en:'Neither high nor low', vi:'Trung tính'}, {n:6, en:'Slightly high', vi:'Hơi cao'},
+    {n:7, en:'Moderately high', vi:'Khá cao'}, {n:8, en:'Very high', vi:'Rất cao'}, {n:9, en:'Extremely high', vi:'Cực kỳ cao'}
+  ];
+  const CATA_LIST = [
+    {en:'Floral', vi:'Hoa'}, {en:'Fruity', vi:'Trái cây'}, {en:'Berry', vi:'Quả mọng'}, {en:'Dried Fruit', vi:'Trái cây khô'}, {en:'Citrus Fruit', vi:'Cam chanh'},
+    {en:'Sour/Fermented', vi:'Chua/Lên men'}, {en:'Sour', vi:'Chua'}, {en:'Fermented', vi:'Lên men'}, {en:'Green/Vegetative', vi:'Xanh/Thực vật'}, {en:'Other', vi:'Khác'},
+    {en:'Chemical', vi:'Hóa chất'}, {en:'Musty/Earthy', vi:'Mốc/Đất'}, {en:'Woody', vi:'Gỗ'}, {en:'Roasted', vi:'Rang cháy'}, {en:'Cereal', vi:'Ngũ cốc'},
+    {en:'Burnt', vi:'Khét'}, {en:'Tobacco', vi:'Thuốc lá'}, {en:'Nutty/Cocoa', vi:'Hạt/Cacao'}, {en:'Nutty', vi:'Hạt (nuts)'}, {en:'Cocoa', vi:'Cacao'},
+    {en:'Spice', vi:'Gia vị'}, {en:'Sweet', vi:'Ngọt'}, {en:'Vanilla/Vanillin', vi:'Vani'}, {en:'Brown Sugar', vi:'Đường nâu'}
+  ];
+  const MAIN_TASTES = [{en:'Salty', vi:'Mặn'}, {en:'Sour', vi:'Chua'}, {en:'Sweet', vi:'Ngọt'}, {en:'Bitter', vi:'Đắng'}, {en:'Umami', vi:''}];
+  const MOUTHFEEL_CATA = [
+    {en:'Rough (Gritty, Chalky, Sandy)', vi:'Nhám (Sạn, Phấn, Cát)'}, {en:'Oily', vi:'Dầu'},
+    {en:'Smooth (Velvety, Silky, Syrupy)', vi:'Mượt (Nhung, Lụa, Siro)'}, {en:'Mouth-Drying', vi:'Se miệng'}, {en:'Metallic', vi:'Kim loại'}
+  ];
+  const COLOR_OPTIONS = [
+    {en:'Blue Green', vi:'Xanh lam'}, {en:'Bluish-Green', vi:'Xanh lam nhạt'}, {en:'Green', vi:'Xanh lá'}, {en:'Greenish', vi:'Hơi xanh'},
+    {en:'Yellow-Green', vi:'Vàng xanh'}, {en:'Pale Yellow', vi:'Vàng nhạt'}, {en:'Yellowish', vi:'Hơi vàng'}, {en:'Brownish', vi:'Hơi nâu'}
+  ];
+  const DEFECT_TYPES = [{en:'Moldy', vi:'Mốc'}, {en:'Phenolic', vi:''}, {en:'Potato', vi:'Khoai tây'}];
+  const PROCESS_TYPES = [{en:'Washed', vi:'Chế biến ướt'}, {en:'Natural', vi:'Chế biến khô (tự nhiên)'}, {en:'Other', vi:''}];
+  const CAT1_DEFECTS = [
+    {key:'fullBlack', en:'Full Black', vi:'Đen toàn phần', ratio:1}, {key:'fullSour', en:'Full Sour', vi:'Chua toàn phần', ratio:1},
+    {key:'driedCherry', en:'Dried Cherry / Pod', vi:'Quả khô / Vỏ trấu', ratio:1}, {key:'fungusDamaged', en:'Fungus Damaged', vi:'Hư nấm mốc', ratio:1},
+    {key:'foreignMatter', en:'Foreign Matter', vi:'Tạp chất', ratio:1}, {key:'severeInsect', en:'Severe Insect Damage', vi:'Sâu hại nặng', ratio:5}
+  ];
+  const CAT2_DEFECTS = [
+    {key:'partialBlack', en:'Partial Black', vi:'Đen một phần', ratio:3}, {key:'partialSour', en:'Partial Sour', vi:'Chua một phần', ratio:3},
+    {key:'parchment', en:'Parchment / Pergamino', vi:'Vỏ trấu (parchment)', ratio:5}, {key:'floater', en:'Floater', vi:'Hạt nổi', ratio:5},
+    {key:'immature', en:'Immature / Unripe', vi:'Chưa chín', ratio:5}, {key:'withered', en:'Withered', vi:'Hạt héo', ratio:5},
+    {key:'shell', en:'Shell', vi:'Vỏ kẹp (shell)', ratio:5}, {key:'broken', en:'Broken / Chipped / Cut', vi:'Vỡ / Sứt / Đứt', ratio:5},
+    {key:'hullHusk', en:'Hull / Husk', vi:'Vỏ lụa / vỏ trấu', ratio:5}, {key:'slightInsect', en:'Slight Insect Damage', vi:'Sâu hại nhẹ', ratio:10}
+  ];
+  const SIEVES = ['13','14','15','16','17','18','19'];
+  const CERTIFICATIONS = ['4C','Fair Trade','Organic','Rainforest Alliance'];
+
+  function chipValue(item){ return typeof item==='string' ? item : item.en; }
+  function chipText(item){
+    if(typeof item==='string') return item;
+    return (lang==='vi' && item.vi) ? item.en+' ('+item.vi+')' : item.en;
+  }
+
+  function makeSample(label){
+    return {
+      id: 'smp_' + Math.random().toString(36).slice(2,9),
+      label: label,
+      ratings: Object.fromEntries(ATTRS.map(a=>[a.key,5])),
+      nonUniform: [false,false,false,false,false],
+      defective: [false,false,false,false,false],
+      defectTypes: [],
+      notes: ''
+    };
+  }
+
+  const defaultState = () => ({
+    id: null,
+    meta: { sampleNo:'', cupper:'', date:new Date().toISOString().slice(0,10), purpose:'' },
+    physical: {
+      color:'', cat1: Object.fromEntries(CAT1_DEFECTS.map(d=>[d.key,0])), cat2: Object.fromEntries(CAT2_DEFECTS.map(d=>[d.key,0])),
+      moisture:'', beanSize: Object.fromEntries(SIEVES.map(s=>[s,0])), notes:''
+    },
+    descriptive: {
+      roastLevel:'', fragranceIntensity:0, aromaIntensity:0, faCata:[], faNotes:'',
+      flavorIntensity:0, aftertasteIntensity:0, faaCata:[], mainTastes:[], faaNotes:'',
+      acidityIntensity:0, acidityNotes:'', sweetnessIntensity:0, sweetnessNotes:'',
+      mouthfeelIntensity:0, mouthfeelCata:[], mouthfeelNotes:''
+    },
+    affective: { samples: [ makeSample('01') ], step: 0, mode:'step', reviewIndex: 0 },
+    extrinsic: {
+      farming:{country:'',region:'',farm:'',producer:'',species:'',variety:'',harvest:'',other:''},
+      processing:{processor:'',wetMill:'',dryMill:'',type:'',detail:''},
+      trading:{sizeGrade:'',otherGrade:'',ico:'',other:''},
+      certifications:{list:[], other:''}
+    }
+  });
+
+  let state = defaultState();
+  let currentTab = 'affective';
+  const $ = sel => document.querySelector(sel);
+  const cupIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h13a3 3 0 0 1 0 6h-1"/><path d="M3 8v7a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V8"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>';
+
+  function roundToQuarter(x){ return Math.round(x / 0.25) * 0.25; }
+  function computeScoreFor(sample){
+    const sum = ATTRS.reduce((acc,a)=>acc+sample.ratings[a.key],0);
+    const u = sample.nonUniform.filter(Boolean).length;
+    const d = sample.defective.filter(Boolean).length;
+    const raw = 0.65625*sum + 52.75 - (2*u) - (4*d);
+    return {sum, u, d, final: roundToQuarter(raw)};
+  }
+  function summarizeScores(samples){
+    samples = samples || [];
+    const finals = samples.map(s=>computeScoreFor(s).final);
+    if(finals.length===0) return '—';
+    if(finals.length===1) return finals[0].toFixed(2);
+    const min = Math.min(...finals).toFixed(2), max = Math.max(...finals).toFixed(2);
+    return finals.length+' · '+min+'–'+max;
+  }
+  function escapeHtml(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function escapeAttr(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;'); }
+
+  function mergeDeep(base, extra){
+    if(!extra || typeof extra !== 'object') return base;
+    const out = Array.isArray(base) ? base.slice() : {...base};
+    Object.keys(extra).forEach(k=>{
+      if(extra[k] && typeof extra[k]==='object' && !Array.isArray(extra[k]) && base[k] && typeof base[k]==='object' && !Array.isArray(base[k])){
+        out[k] = mergeDeep(base[k], extra[k]);
+      } else { out[k] = extra[k]; }
+    });
+    return out;
+  }
+
+  function showToast(msg){
+    const t2 = $('#toast'); t2.textContent = msg; t2.classList.add('show');
+    clearTimeout(showToast._h); showToast._h = setTimeout(()=>t2.classList.remove('show'), 2200);
+  }
+
+  function guideBoxHtml(key, textKey){
+    return `<div class="guide-box">
+      <div class="guide-head" data-guide-toggle="${key}">
+        <span class="label">💡 ${t('guideLabel')}</span>
+        <span class="guide-chevron" id="chev_${key}">▾</span>
+      </div>
+      <div class="guide-body" id="guideBody_${key}"><p>${t(textKey)}</p></div>
+    </div>`;
+  }
+  function wireGuideToggle(key){
+    const head = document.querySelector('[data-guide-toggle="'+key+'"]'); if(!head) return;
+    head.addEventListener('click', ()=>{
+      document.getElementById('guideBody_'+key).classList.toggle('open');
+      document.getElementById('chev_'+key).classList.toggle('open');
+    });
+  }
+
+  // ---------- Static panel builders (Physical / Descriptive / Extrinsic) ----------
+  function sliderField(key, en, vi){
+    const viHtml = (lang==='vi' && vi) ? '<span class="vi">'+vi+'</span>' : '';
+    return '<div class="field"><div class="attr-head"><div class="attr-name">'+en+viHtml+'</div><div class="attr-val" id="val_'+key+'">0</div></div>'+
+      '<input type="range" class="intensity" id="'+key+'" min="0" max="15" step="1" value="0">'+
+      '<div class="slider-track-labels"><span>'+t('lowLabel')+'</span><span>'+t('medLabel')+'</span><span>'+t('highLabel')+'</span></div></div>';
+  }
+
+  function buildPhysicalPanel(){
+    document.getElementById('panel-physical').innerHTML = `
+      ${guideBoxHtml('physical','guidePhysical')}
+      <div class="section"><div class="section-title">${t('physicalColorTitle')}</div><div class="cata-grid" id="colorChips"></div></div>
+      <div class="section"><div class="section-title">${t('physicalCat1Title')}</div><div id="cat1Group"></div><div class="totals-row"><span>${t('physicalCat1TotalLabel')}</span><span id="cat1Total">0</span></div></div>
+      <div class="section"><div class="section-title">${t('physicalCat2Title')}</div><div id="cat2Group"></div><div class="totals-row"><span>${t('physicalCat2TotalLabel')}</span><span id="cat2Total">0</span></div><div class="totals-row"><span>${t('physicalTotalGreenLabel')}</span><span id="totalGreenDefects">0</span></div></div>
+      <div class="section">
+        <div class="section-title">${t('physicalMoistureSizeTitle')}</div>
+        <div class="field"><label>${t('physicalMoistureLabel')}</label><input type="text" inputmode="decimal" id="moisture" placeholder="${t('physicalMoisturePh')}"></div>
+        <div class="accordion-head" id="sieveToggle"><div class="section-title" style="margin:0;">${t('physicalSieveToggle')} ▾</div></div>
+        <div class="accordion-body" id="sieveBody"><div id="sieveRows"></div><div class="totals-row"><span>${t('physicalSieveTotalLabel')}</span><span id="sieveTotal">0.0 g</span></div></div>
+      </div>
+      <div class="section"><div class="section-title">${t('physicalNotesTitle')}</div><div class="field"><textarea id="physicalNotes" placeholder="${t('physicalNotesPh')}"></textarea></div></div>
+    `;
+  }
+
+  function buildDescriptivePanel(){
+    document.getElementById('panel-descriptive').innerHTML = `
+      ${guideBoxHtml('descriptive','guideDescriptive')}
+      <div class="section">
+        <div class="section-title">${t('descRoastTitle')}</div>
+        <div class="field"><label>${t('descRoastLabel')}</label>
+          <select id="roastLevel"><option value="">${t('selectPlaceholder')}</option><option>Light</option><option>Medium-Light</option><option>Medium</option><option>Medium-Dark</option><option>Dark</option></select>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">${t('descFATitle')}</div>
+        ${sliderField('fragranceIntensity', ATTRS[0].en, ATTRS[0].vi)}
+        ${sliderField('aromaIntensity', ATTRS[1].en, ATTRS[1].vi)}
+        <label class="mini-label">${t('descCataMax5')}</label><div class="cata-grid" id="faCata"></div>
+        <div class="field" style="margin-top:10px;"><label>${t('descNotesLabel')}</label><textarea id="faNotes"></textarea></div>
+      </div>
+      <div class="section">
+        <div class="section-title">${t('descFaaTitle')}</div>
+        ${sliderField('flavorIntensity', ATTRS[2].en, ATTRS[2].vi)}
+        ${sliderField('aftertasteIntensity', ATTRS[3].en, ATTRS[3].vi)}
+        <label class="mini-label">${t('descRetronasalMax5')}</label><div class="cata-grid" id="faaCata"></div>
+        <label class="mini-label">${t('descMainTastesMax2')}</label><div class="cata-grid" id="mainTastes"></div>
+        <div class="field" style="margin-top:10px;"><label>${t('descNotesLabel')}</label><textarea id="faaNotes"></textarea></div>
+      </div>
+      <div class="section">
+        <div class="section-title">${t('descAcidityTitle')}</div>
+        ${sliderField('acidityIntensity', ATTRS[4].en, ATTRS[4].vi)}
+        <div class="field"><label>${t('descAcidityFreeLabel')}</label><textarea id="acidityNotes"></textarea></div>
+      </div>
+      <div class="section">
+        <div class="section-title">${t('descSweetnessTitle')}</div>
+        ${sliderField('sweetnessIntensity', ATTRS[5].en, ATTRS[5].vi)}
+        <div class="field"><label>${t('descSweetnessFreeLabel')}</label><textarea id="sweetnessNotes"></textarea></div>
+      </div>
+      <div class="section">
+        <div class="section-title">${t('descMouthfeelTitle')}</div>
+        ${sliderField('mouthfeelIntensity', ATTRS[6].en, ATTRS[6].vi)}
+        <label class="mini-label">${t('descMouthfeelMax2')}</label><div class="cata-grid" id="mouthfeelCata"></div>
+        <div class="field" style="margin-top:10px;"><label>${t('descNotesLabel')}</label><textarea id="mouthfeelNotes"></textarea></div>
+      </div>
+    `;
+  }
+
+  function buildExtrinsicPanel(){
+    document.getElementById('panel-extrinsic').innerHTML = `
+      ${guideBoxHtml('extrinsic','guideExtrinsic')}
+      <div class="section">
+        <div class="section-title">${t('extFarmingTitle')}</div>
+        <div class="field"><label>${t('extCountry')}</label><input type="text" id="ex_country"></div>
+        <div class="field"><label>${t('extRegion')}</label><input type="text" id="ex_region"></div>
+        <div class="field-row"><div class="field"><label>${t('extFarm')}</label><input type="text" id="ex_farm"></div><div class="field"><label>${t('extProducer')}</label><input type="text" id="ex_producer"></div></div>
+        <div class="field"><label>${t('extSpecies')}</label><select id="ex_species"><option value="">${t('selectPlaceholder')}</option><option>Arabica</option><option>Robusta (Canephora)</option><option>Liberica</option><option>Other</option></select></div>
+        <div class="field-row"><div class="field"><label>${t('extVariety')}</label><input type="text" id="ex_variety"></div><div class="field"><label>${t('extHarvest')}</label><input type="text" id="ex_harvest"></div></div>
+        <div class="field"><label>${t('extFarmingOtherLabel')}</label><textarea id="ex_farmingOther" placeholder="${t('extFarmingOtherPh')}"></textarea></div>
+      </div>
+      <div class="section">
+        <div class="section-title">${t('extProcessingTitle')}</div>
+        <div class="field"><label>${t('extProcessor')}</label><input type="text" id="ex_processor"></div>
+        <div class="field-row"><div class="field"><label>${t('extWetMill')}</label><input type="text" id="ex_wetMill"></div><div class="field"><label>${t('extDryMill')}</label><input type="text" id="ex_dryMill"></div></div>
+        <label class="mini-label">${t('extProcessTypeLabel')}</label><div class="cata-grid" id="processType"></div>
+        <div class="field" style="margin-top:10px;"><label>${t('extProcessOtherLabel')}</label><textarea id="ex_processOther" placeholder="${t('extProcessOtherPh')}"></textarea></div>
+      </div>
+      <div class="section">
+        <div class="section-title">${t('extTradingTitle')}</div>
+        <div class="field-row"><div class="field"><label>${t('extSizeGrade')}</label><input type="text" id="ex_sizeGrade" placeholder="${t('extSizeGradePh')}"></div><div class="field"><label>${t('extOtherGrade')}</label><input type="text" id="ex_otherGrade" placeholder="${t('extOtherGradePh')}"></div></div>
+        <div class="field"><label>${t('extIco')}</label><input type="text" id="ex_ico"></div>
+        <div class="field"><label>${t('extTradingOtherLabel')}</label><textarea id="ex_tradingOther" placeholder="${t('extTradingOtherPh')}"></textarea></div>
+      </div>
+      <div class="section">
+        <div class="section-title">${t('extCertTitle')}</div>
+        <div class="cata-grid" id="certChips"></div>
+        <div class="field" style="margin-top:10px;"><label>${t('extCertOtherLabel')}</label><input type="text" id="ex_certOther" placeholder="${t('extCertOtherPh')}"></div>
+      </div>
+    `;
+  }
+
+  // ---------- Text bindings ----------
+  const META_BINDINGS = [
+    ['sampleNo', ()=>state.meta, 'sampleNo'], ['sampleDate', ()=>state.meta, 'date'], ['cupperName', ()=>state.meta, 'cupper'], ['purpose', ()=>state.meta, 'purpose']
+  ];
+  const PANEL_BINDINGS = [
+    ['roastLevel', ()=>state.descriptive, 'roastLevel'], ['faNotes', ()=>state.descriptive, 'faNotes'], ['faaNotes', ()=>state.descriptive, 'faaNotes'],
+    ['acidityNotes', ()=>state.descriptive, 'acidityNotes'], ['sweetnessNotes', ()=>state.descriptive, 'sweetnessNotes'], ['mouthfeelNotes', ()=>state.descriptive, 'mouthfeelNotes'],
+    ['moisture', ()=>state.physical, 'moisture'], ['physicalNotes', ()=>state.physical, 'notes'],
+    ['ex_country', ()=>state.extrinsic.farming, 'country'], ['ex_region', ()=>state.extrinsic.farming, 'region'], ['ex_farm', ()=>state.extrinsic.farming, 'farm'],
+    ['ex_producer', ()=>state.extrinsic.farming, 'producer'], ['ex_species', ()=>state.extrinsic.farming, 'species'], ['ex_variety', ()=>state.extrinsic.farming, 'variety'],
+    ['ex_harvest', ()=>state.extrinsic.farming, 'harvest'], ['ex_farmingOther', ()=>state.extrinsic.farming, 'other'],
+    ['ex_processor', ()=>state.extrinsic.processing, 'processor'], ['ex_wetMill', ()=>state.extrinsic.processing, 'wetMill'], ['ex_dryMill', ()=>state.extrinsic.processing, 'dryMill'],
+    ['ex_processOther', ()=>state.extrinsic.processing, 'detail'],
+    ['ex_sizeGrade', ()=>state.extrinsic.trading, 'sizeGrade'], ['ex_otherGrade', ()=>state.extrinsic.trading, 'otherGrade'], ['ex_ico', ()=>state.extrinsic.trading, 'ico'],
+    ['ex_tradingOther', ()=>state.extrinsic.trading, 'other'], ['ex_certOther', ()=>state.extrinsic.certifications, 'other']
+  ];
+  function attachMetaListeners(){
+    META_BINDINGS.forEach(([id, getObj, key])=>{
+      const el = document.getElementById(id); if(!el) return;
+      el.addEventListener('input', ()=>{ getObj()[key] = el.value; updateTabDots(); });
+    });
+  }
+  function attachPanelTextListeners(){
+    PANEL_BINDINGS.forEach(([id, getObj, key])=>{
+      const el = document.getElementById(id); if(!el) return;
+      el.addEventListener('input', ()=>{ getObj()[key] = el.value; updateTabDots(); });
+    });
+  }
+  function setTextValues(){
+    META_BINDINGS.concat(PANEL_BINDINGS).forEach(([id, getObj, key])=>{
+      const el = document.getElementById(id); if(!el) return;
+      el.value = getObj()[key] || '';
+    });
+  }
+
+  const SLIDER_KEYS = ['fragranceIntensity','aromaIntensity','flavorIntensity','aftertasteIntensity','acidityIntensity','sweetnessIntensity','mouthfeelIntensity'];
+  function attachSliderListeners(){
+    SLIDER_KEYS.forEach(key=>{
+      const el = document.getElementById(key); if(!el) return;
+      el.addEventListener('input', ()=>{
+        state.descriptive[key] = parseInt(el.value,10);
+        document.getElementById('val_'+key).textContent = el.value;
+        updateTabDots();
+      });
+    });
+  }
+  function setSliderValues(){
+    SLIDER_KEYS.forEach(key=>{
+      const el = document.getElementById(key); if(!el) return;
+      const v = state.descriptive[key] || 0;
+      el.value = v; document.getElementById('val_'+key).textContent = v;
+    });
+  }
+
+  function attachPanelInputListeners(){
+    attachPanelTextListeners();
+    attachSliderListeners();
+    const sieveToggle = document.getElementById('sieveToggle');
+    if(sieveToggle) sieveToggle.addEventListener('click', ()=>{ document.getElementById('sieveBody').classList.toggle('open'); });
+    wireGuideToggle('physical'); wireGuideToggle('descriptive'); wireGuideToggle('extrinsic');
+  }
+
+  // ---------- Generic chip / stepper / sieve renderers ----------
+  function renderChipGroup(container, items, arr, max, cb){
+    if(!container) return;
+    container.innerHTML = items.map(item=>{
+      const val = chipValue(item);
+      return '<div class="cata-chip'+(arr.includes(val)?' active':'')+'" data-opt="'+escapeAttr(val)+'">'+chipText(item)+'</div>';
+    }).join('');
+    container.querySelectorAll('.cata-chip').forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        const opt = chip.dataset.opt; const idx = arr.indexOf(opt);
+        if(idx>=0){ arr.splice(idx,1); }
+        else{ if(max && arr.length>=max){ showToast(t('toastMaxChoice').replace('{max}',max)); return; } arr.push(opt); }
+        renderChipGroup(container, items, arr, max, cb);
+        if(cb) cb();
+      });
+    });
+  }
+
+  function renderColorChips(){
+    const c = document.getElementById('colorChips'); if(!c) return;
+    c.innerHTML = COLOR_OPTIONS.map(item=>{
+      const val = chipValue(item);
+      return '<div class="cata-chip'+(state.physical.color===val?' active':'')+'" data-opt="'+escapeAttr(val)+'">'+chipText(item)+'</div>';
+    }).join('');
+    c.querySelectorAll('.cata-chip').forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        state.physical.color = state.physical.color===chip.dataset.opt ? '' : chip.dataset.opt;
+        renderColorChips(); updateTabDots();
+      });
+    });
+  }
+
+  function renderProcessTypeChips(){
+    const el = document.getElementById('processType'); if(!el) return;
+    el.innerHTML = PROCESS_TYPES.map(item=>{
+      const val = chipValue(item);
+      return '<div class="cata-chip'+(state.extrinsic.processing.type===val?' active':'')+'" data-opt="'+escapeAttr(val)+'">'+chipText(item)+'</div>';
+    }).join('');
+    el.querySelectorAll('.cata-chip').forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        state.extrinsic.processing.type = state.extrinsic.processing.type===chip.dataset.opt ? '' : chip.dataset.opt;
+        renderProcessTypeChips(); updateTabDots();
+      });
+    });
+  }
+
+  function renderCertChips(){ renderChipGroup(document.getElementById('certChips'), CERTIFICATIONS, state.extrinsic.certifications.list, null, updateTabDots); }
+
+  function defectTypeChipsHtml(selectedArr){
+    return DEFECT_TYPES.map(item=>{
+      const val = chipValue(item);
+      return `<div class="cata-chip${selectedArr.includes(val)?' active':''}" data-opt="${escapeAttr(val)}">${chipText(item)}</div>`;
+    }).join('');
+  }
+
+  function renderDefectGroup(container, list, stateObj){
+    if(!container) return;
+    container.innerHTML = list.map(d => `
+      <div class="stepper-row">
+        <div class="stepper-label"><div class="name">${d.en}${lang==='vi'&&d.vi?' · '+d.vi:''}</div><div class="ratio">${d.ratio}:1</div></div>
+        <div class="stepper-ctrl"><div class="stepper-btn" data-act="dec" data-key="${d.key}">−</div><div class="stepper-val" id="sv_${d.key}">${stateObj[d.key]}</div><div class="stepper-btn" data-act="inc" data-key="${d.key}">+</div></div>
+        <div class="stepper-eq" id="eq_${d.key}">= ${Math.floor(stateObj[d.key]/d.ratio)}</div>
+      </div>`).join('');
+    container.querySelectorAll('.stepper-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const key = btn.dataset.key, def = list.find(x=>x.key===key);
+        let v = stateObj[key];
+        v = btn.dataset.act==='inc' ? v+1 : Math.max(0, v-1);
+        stateObj[key] = v;
+        document.getElementById('sv_'+key).textContent = v;
+        document.getElementById('eq_'+key).textContent = '= ' + Math.floor(v/def.ratio);
+        updatePhysicalTotals(); updateTabDots();
+      });
+    });
+  }
+
+  function updatePhysicalTotals(){
+    const cat1 = CAT1_DEFECTS.reduce((s,d)=>s+Math.floor((state.physical.cat1[d.key]||0)/d.ratio),0);
+    const cat2 = CAT2_DEFECTS.reduce((s,d)=>s+Math.floor((state.physical.cat2[d.key]||0)/d.ratio),0);
+    const c1=document.getElementById('cat1Total'), c2=document.getElementById('cat2Total'), tot=document.getElementById('totalGreenDefects');
+    if(c1) c1.textContent = cat1; if(c2) c2.textContent = cat2; if(tot) tot.textContent = cat1+cat2;
+  }
+
+  function renderSieveRows(){
+    const wrap = document.getElementById('sieveRows'); if(!wrap) return;
+    wrap.innerHTML = SIEVES.map(s => `<div class="sieve-row"><div>#${s}</div><input type="number" min="0" step="0.1" class="sieve-input" data-s="${s}" value="${state.physical.beanSize[s]||''}" placeholder="g"><div class="sieve-pct" id="pct_${s}">0.0%</div></div>`).join('');
+    wrap.querySelectorAll('.sieve-input').forEach(inp=>{
+      inp.addEventListener('input', ()=>{ state.physical.beanSize[inp.dataset.s] = parseFloat(inp.value)||0; updateSieveTotals(); updateTabDots(); });
+    });
+    updateSieveTotals();
+  }
+  function updateSieveTotals(){
+    const total = SIEVES.reduce((a,s)=>a+(state.physical.beanSize[s]||0),0);
+    SIEVES.forEach(s=>{
+      const g = state.physical.beanSize[s]||0;
+      const pct = total>0 ? (g/total*100) : 0;
+      const el = document.getElementById('pct_'+s); if(el) el.textContent = pct.toFixed(1)+'%';
+    });
+    const totalEl = document.getElementById('sieveTotal'); if(totalEl) totalEl.textContent = total.toFixed(1)+' g';
+  }
+
+  // ---------- Affective: scale legend + scoreboard + step-based multi-sample entry + per-sample review ----------
+  function renderScaleLegend(){
+    const el = document.getElementById('scaleLegend'); if(!el) return;
+    el.innerHTML = SCALE_LABELS.map(item => `
+      <div class="legend-item">
+        <span class="legend-num">${item.n}</span>
+        <span class="legend-text">${item.en}${lang==='vi' ? '<span class="legend-vi">'+item.vi+'</span>' : ''}</span>
+      </div>`).join('');
+  }
+
+  function renderScoreboard(){
+    const wrap = document.getElementById('scoreboard'); if(!wrap) return;
+    const samples = state.affective.samples;
+    wrap.innerHTML = samples.map((s,i) => {
+      const {final} = computeScoreFor(s);
+      const pass = final>=80;
+      return `<div class="sb-row">
+        <input class="sb-label" data-i="${i}" value="${escapeAttr(s.label)}" placeholder="${t('affSamplePh')}">
+        <div class="sb-score-click" data-i="${i}">
+          <div class="sb-score">${final.toFixed(2)}</div>
+          <div class="sb-pill ${pass?'pass':'fail'}">${pass?t('affSpecialty'):'—'}</div>
+        </div>
+        ${samples.length>1 ? `<div class="sb-del" data-i="${i}">✕</div>` : ''}
+      </div>`;
+    }).join('') + `<div class="sb-add" id="addSampleBtn">${t('affAddSample')}</div>`;
+
+    wrap.querySelectorAll('.sb-label').forEach(inp=>{
+      inp.addEventListener('input', ()=>{
+        state.affective.samples[parseInt(inp.dataset.i,10)].label = inp.value;
+        renderReviewSampleChips();
+      });
+    });
+    wrap.querySelectorAll('.sb-score-click').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        state.affective.reviewIndex = parseInt(el.dataset.i,10);
+        setReviewMode('sample');
+      });
+    });
+    wrap.querySelectorAll('.sb-del').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        state.affective.samples.splice(parseInt(btn.dataset.i,10),1);
+        renderScoreboard(); renderStepContent(); renderReviewSampleChips(); renderReviewContent(); updateTabDots();
+      });
+    });
+    const addBtn = document.getElementById('addSampleBtn');
+    if(addBtn) addBtn.addEventListener('click', ()=>{
+      const n = state.affective.samples.length+1;
+      state.affective.samples.push(makeSample(String(n).padStart(2,'0')));
+      renderScoreboard(); renderStepContent(); renderReviewSampleChips(); renderReviewContent(); updateTabDots();
+    });
+  }
+
+  function renderStepNav(){
+    const step = STEPS[state.affective.step];
+    document.getElementById('stepLabel').textContent = t('affStepPrefix')+' '+(state.affective.step+1)+'/'+STEPS.length+' · '+step.en.toUpperCase();
+    const subEl = document.getElementById('stepSub');
+    if(lang==='vi' && step.vi){ subEl.textContent = step.vi; subEl.style.display=''; } else { subEl.style.display='none'; }
+    document.getElementById('prevStepBtn').disabled = state.affective.step===0;
+    document.getElementById('nextStepBtn').disabled = state.affective.step===STEPS.length-1;
+    const dotsWrap = document.getElementById('stepDots');
+    dotsWrap.innerHTML = STEPS.map((s,i)=>`<div class="step-dot${i===state.affective.step?' active':''}" data-i="${i}"></div>`).join('');
+    dotsWrap.querySelectorAll('.step-dot').forEach(d=>{
+      d.addEventListener('click', ()=>{ state.affective.step = parseInt(d.dataset.i,10); renderStepNav(); renderStepContent(); });
+    });
+  }
+
+  function renderStepContent(){
+    const container = document.getElementById('stepContent'); if(!container) return;
+    const step = STEPS[state.affective.step];
+    const samples = state.affective.samples;
+    if(step.key === 'uniformity'){
+      container.innerHTML = samples.map((s,i)=>`
+        <div class="sample-card">
+          <div class="sample-card-head">${escapeHtml(s.label)}</div>
+          <div class="mini-label" style="margin-top:0;">${t('affNonUniformTitle')}</div>
+          <div class="cup-group" data-role="uniform" data-i="${i}">${s.nonUniform.map((a,j)=>`<div class="cup-btn${a?' active uniform':''}" data-j="${j}">${cupIconSvg}${j+1}</div>`).join('')}</div>
+          <div class="mini-label">${t('affDefectiveTitle')}</div>
+          <div class="cup-group" data-role="defect" data-i="${i}">${s.defective.map((a,j)=>`<div class="cup-btn${a?' active defect':''}" data-j="${j}">${cupIconSvg}${j+1}</div>`).join('')}</div>
+          ${s.defective.some(Boolean) ? `<div class="cata-grid" data-variant="bad" data-role="defecttype" data-i="${i}" style="margin-top:10px;">${defectTypeChipsHtml(s.defectTypes)}</div>` : ''}
+          <div class="field" style="margin-top:10px;"><label>${t('descNotesLabel')}</label><textarea data-role="notes" data-i="${i}" placeholder="${t('affNotesPh')}">${escapeHtml(s.notes)}</textarea></div>
+        </div>`).join('');
+      container.querySelectorAll('.cup-btn').forEach(btn=>{
+        btn.addEventListener('click', ()=>{
+          const group = btn.parentElement;
+          const role = group.dataset.role, i = parseInt(group.dataset.i,10), j = parseInt(btn.dataset.j,10);
+          const s = state.affective.samples[i];
+          if(role==='uniform') s.nonUniform[j] = !s.nonUniform[j]; else s.defective[j] = !s.defective[j];
+          renderStepContent(); renderScoreboard(); renderReviewContent(); updateTabDots();
+        });
+      });
+      container.querySelectorAll('[data-role="defecttype"] .cata-chip').forEach(chip=>{
+        chip.addEventListener('click', ()=>{
+          const wrap = chip.parentElement, i = parseInt(wrap.dataset.i,10);
+          const s = state.affective.samples[i], val = chip.dataset.opt;
+          const idx = s.defectTypes.indexOf(val);
+          if(idx>=0) s.defectTypes.splice(idx,1); else s.defectTypes.push(val);
+          renderStepContent(); renderReviewContent();
+        });
+      });
+      container.querySelectorAll('textarea[data-role="notes"]').forEach(ta=>{
+        ta.addEventListener('input', ()=>{ state.affective.samples[parseInt(ta.dataset.i,10)].notes = ta.value; });
+      });
+    } else {
+      container.innerHTML = samples.map((s,i)=>`
+        <div class="sample-rate-row">
+          <div class="sample-rate-label">${escapeHtml(s.label)}</div>
+          <div class="circle-group" data-i="${i}">${[1,2,3,4,5,6,7,8,9].map(n=>`<div class="circle${s.ratings[step.key]===n?' active':''}" data-n="${n}">${n}</div>`).join('')}</div>
+        </div>`).join('');
+      container.querySelectorAll('.circle-group').forEach(group=>{
+        const i = parseInt(group.dataset.i,10);
+        group.querySelectorAll('.circle').forEach(c=>{
+          c.addEventListener('click', ()=>{
+            state.affective.samples[i].ratings[step.key] = parseInt(c.dataset.n,10);
+            renderStepContent(); renderScoreboard(); renderReviewContent(); updateTabDots();
+          });
+        });
+      });
+    }
+  }
+
+  function renderReviewSampleChips(){
+    const wrap = document.getElementById('reviewSampleChips'); if(!wrap) return;
+    const samples = state.affective.samples;
+    if(state.affective.reviewIndex >= samples.length) state.affective.reviewIndex = Math.max(0, samples.length-1);
+    wrap.innerHTML = samples.map((s,i)=>{
+      const {final} = computeScoreFor(s);
+      return `<div class="cata-chip${i===state.affective.reviewIndex?' active':''}" data-i="${i}">${escapeHtml(s.label)||('#'+(i+1))} · ${final.toFixed(2)}</div>`;
+    }).join('');
+    wrap.querySelectorAll('.cata-chip').forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        state.affective.reviewIndex = parseInt(chip.dataset.i,10);
+        renderReviewSampleChips(); renderReviewContent();
+      });
+    });
+  }
+
+  function renderReviewContent(){
+    const container = document.getElementById('reviewContent'); if(!container) return;
+    const samples = state.affective.samples;
+    if(samples.length===0){ container.innerHTML = '<div class="empty-state">'+t('affNoSamples')+'</div>'; return; }
+    const i = Math.min(state.affective.reviewIndex || 0, samples.length-1);
+    const s = samples[i];
+    const {final, sum, u, d} = computeScoreFor(s);
+    const pass = final>=80;
+    container.innerHTML = `
+      <div class="review-score-row">
+        <div><div class="score-label">${t('affScorePrefix')} ${escapeHtml(s.label)}</div><div class="score-value">${final.toFixed(2)}</div></div>
+        <div class="grade-pill ${pass?'pass':'fail'}">${pass?t('affSpecialty'):t('affBelowThreshold')}</div>
+      </div>
+      <div class="score-meta" style="margin-top:10px;">
+        <div class="item">${t('affRawLabel')} <b>${sum}</b>/72</div>
+        <div class="item">${t('affNonUniformCountLabel')} <b>${u}</b></div>
+        <div class="item">${t('affDefectiveCountLabel')} <b>${d}</b></div>
+      </div>
+      <div style="margin-top:16px;">
+        ${ATTRS.map(a=>`
+          <div class="attr-row">
+            <div class="attr-head"><div class="attr-name">${a.en}${lang==='vi'?'<span class="vi">'+a.vi+'</span>':''}</div><div class="attr-val">${s.ratings[a.key]}</div></div>
+            <div class="circle-group" data-review-key="${a.key}">${[1,2,3,4,5,6,7,8,9].map(n=>`<div class="circle${s.ratings[a.key]===n?' active':''}" data-n="${n}">${n}</div>`).join('')}</div>
+          </div>`).join('')}
+      </div>
+      <div class="mini-label" style="margin-top:4px;">${t('affNonUniformTitle')}</div>
+      <div class="cup-group" id="reviewUniformGroup">${s.nonUniform.map((a2,j)=>`<div class="cup-btn${a2?' active uniform':''}" data-j="${j}">${cupIconSvg}${j+1}</div>`).join('')}</div>
+      <div class="mini-label">${t('affDefectiveTitle')}</div>
+      <div class="cup-group" id="reviewDefectGroup">${s.defective.map((a2,j)=>`<div class="cup-btn${a2?' active defect':''}" data-j="${j}">${cupIconSvg}${j+1}</div>`).join('')}</div>
+      ${s.defective.some(Boolean) ? `<div class="cata-grid" data-variant="bad" id="reviewDefectTypes" style="margin-top:10px;">${defectTypeChipsHtml(s.defectTypes)}</div>` : ''}
+      <div class="field" style="margin-top:12px;"><label>${t('descNotesLabel')}</label><textarea id="reviewNotes">${escapeHtml(s.notes)}</textarea></div>
+    `;
+
+    container.querySelectorAll('[data-review-key]').forEach(group=>{
+      const key = group.dataset.reviewKey;
+      group.querySelectorAll('.circle').forEach(c=>{
+        c.addEventListener('click', ()=>{
+          s.ratings[key] = parseInt(c.dataset.n,10);
+          renderReviewContent(); renderScoreboard(); renderStepContent(); renderReviewSampleChips(); updateTabDots();
+        });
+      });
+    });
+    document.getElementById('reviewUniformGroup').querySelectorAll('.cup-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        s.nonUniform[parseInt(btn.dataset.j,10)] = !s.nonUniform[parseInt(btn.dataset.j,10)];
+        renderReviewContent(); renderScoreboard(); renderStepContent(); renderReviewSampleChips(); updateTabDots();
+      });
+    });
+    document.getElementById('reviewDefectGroup').querySelectorAll('.cup-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        s.defective[parseInt(btn.dataset.j,10)] = !s.defective[parseInt(btn.dataset.j,10)];
+        renderReviewContent(); renderScoreboard(); renderStepContent(); renderReviewSampleChips(); updateTabDots();
+      });
+    });
+    const dtWrap = document.getElementById('reviewDefectTypes');
+    if(dtWrap){
+      dtWrap.querySelectorAll('.cata-chip').forEach(chip=>{
+        chip.addEventListener('click', ()=>{
+          const val = chip.dataset.opt, idx = s.defectTypes.indexOf(val);
+          if(idx>=0) s.defectTypes.splice(idx,1); else s.defectTypes.push(val);
+          renderReviewContent(); renderStepContent();
+        });
+      });
+    }
+    const notesEl = document.getElementById('reviewNotes');
+    if(notesEl) notesEl.addEventListener('input', ()=>{ s.notes = notesEl.value; });
+  }
+
+  function setReviewMode(mode){
+    state.affective.mode = mode;
+    document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active', b.dataset.mode===mode));
+    document.getElementById('stepModeWrap').style.display = mode==='step' ? 'block':'none';
+    document.getElementById('sampleModeWrap').style.display = mode==='sample' ? 'block':'none';
+    if(mode==='sample'){ renderReviewSampleChips(); renderReviewContent(); }
+    else { renderStepContent(); }
+  }
+
+  // ---------- Tab-has-data checks ----------
+  function hasPhysicalData(p){
+    p = p || state.physical;
+    const cat1has = CAT1_DEFECTS.some(d=>(p.cat1&&p.cat1[d.key])>0);
+    const cat2has = CAT2_DEFECTS.some(d=>(p.cat2&&p.cat2[d.key])>0);
+    const sieveHas = SIEVES.some(s=>(p.beanSize&&p.beanSize[s])>0);
+    return !!p.color || !!p.moisture || !!p.notes || cat1has || cat2has || sieveHas;
+  }
+  function hasDescriptiveData(d){
+    d = d || state.descriptive;
+    return !!d.roastLevel || d.fragranceIntensity>0 || d.aromaIntensity>0 || d.flavorIntensity>0 || d.aftertasteIntensity>0 || d.acidityIntensity>0 || d.sweetnessIntensity>0 || d.mouthfeelIntensity>0 ||
+      (d.faCata&&d.faCata.length>0) || (d.faaCata&&d.faaCata.length>0) || (d.mainTastes&&d.mainTastes.length>0) || (d.mouthfeelCata&&d.mouthfeelCata.length>0) ||
+      !!d.faNotes || !!d.faaNotes || !!d.acidityNotes || !!d.sweetnessNotes || !!d.mouthfeelNotes;
+  }
+  function hasAffectiveData(a){
+    a = a || state.affective;
+    if(!a || !a.samples) return false;
+    return a.samples.some(s=>{
+      const ratingsTouched = Object.values(s.ratings||{}).some(v=>v!==5);
+      return ratingsTouched || (s.nonUniform||[]).some(Boolean) || (s.defective||[]).some(Boolean) || !!s.notes;
+    });
+  }
+  function hasExtrinsicData(e){
+    e = e || state.extrinsic;
+    const f=e.farming||{}, p=e.processing||{}, tr=e.trading||{}, c=e.certifications||{list:[],other:''};
+    return Object.values(f).some(v=>!!v) || Object.values(p).some(v=>!!v) || Object.values(tr).some(v=>!!v) || (c.list&&c.list.length>0) || !!c.other;
+  }
+  function setDot(tab,on){ const dot = document.querySelector('.tab[data-tab="'+tab+'"] .dot'); if(dot) dot.style.display = on ? 'block':'none'; }
+  function updateTabDots(){
+    setDot('physical', hasPhysicalData()); setDot('descriptive', hasDescriptiveData());
+    setDot('affective', hasAffectiveData()); setDot('extrinsic', hasExtrinsicData());
+  }
+
+  // ---------- Tabs ----------
+  function switchTab(name){
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById('panel-'+name).classList.add('active');
+    document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
+    currentTab = name;
+  }
+
+  // ---------- i18n application ----------
+  function applyI18nStatic(){
+    document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent = t(el.dataset.i18n); });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ el.placeholder = t(el.dataset.i18nPh); });
+  }
+  function formBadgeLetters(){ return lang==='vi' ? ['V','M','C','N'] : ['P','D','A','E']; }
+
+  // ---------- Full render ----------
+  function fullRender(){
+    setTextValues(); setSliderValues();
+    renderColorChips();
+    renderDefectGroup(document.getElementById('cat1Group'), CAT1_DEFECTS, state.physical.cat1);
+    renderDefectGroup(document.getElementById('cat2Group'), CAT2_DEFECTS, state.physical.cat2);
+    updatePhysicalTotals();
+    renderSieveRows();
+    renderChipGroup(document.getElementById('faCata'), CATA_LIST, state.descriptive.faCata, 5, updateTabDots);
+    renderChipGroup(document.getElementById('faaCata'), CATA_LIST, state.descriptive.faaCata, 5, updateTabDots);
+    renderChipGroup(document.getElementById('mainTastes'), MAIN_TASTES, state.descriptive.mainTastes, 2, updateTabDots);
+    renderChipGroup(document.getElementById('mouthfeelCata'), MOUTHFEEL_CATA, state.descriptive.mouthfeelCata, 2, updateTabDots);
+    renderProcessTypeChips();
+    renderCertChips();
+    if(state.affective.step==null) state.affective.step = 0;
+    if(state.affective.mode==null) state.affective.mode = 'step';
+    if(state.affective.reviewIndex==null) state.affective.reviewIndex = 0;
+    renderScaleLegend();
+    renderScoreboard();
+    renderStepNav();
+    renderStepContent();
+    renderReviewSampleChips();
+    renderReviewContent();
+    setReviewMode(state.affective.mode);
+    updateTabDots();
+  }
+
+  // ---------- Persistence ----------
+  async function saveSample(){
+    const id = state.id || ('cva_' + Date.now());
+    const record = JSON.parse(JSON.stringify(state));
+    record.id = id; record.savedAt = Date.now();
+    record.affectiveSummary = summarizeScores(state.affective.samples);
+    try{
+      const res = await window.storage.set('cva:'+id, JSON.stringify(record), false);
+      if(!res){ showToast(t('toastSaveFail')); return; }
+      state.id = id;
+      showToast(t('toastSaved').replace('{n}', state.affective.samples.length));
+      loadHistory();
+    }catch(err){ showToast(t('toastSaveError')); }
+  }
+
+  function badge(letter, active){ return '<span style="opacity:'+(active?1:0.28)+';font-weight:700;margin-left:4px;">'+letter+'</span>'; }
+
+  async function loadHistory(){
+    const listEl = $('#historyList');
+    const letters = formBadgeLetters();
+    try{
+      const res = await window.storage.list('cva:', false);
+      const keys = (res && res.keys) ? res.keys : [];
+      if(keys.length === 0){ listEl.innerHTML = '<div class="empty-state">'+t('historyEmpty')+'</div>'; return; }
+      const records = [];
+      for(const k of keys){
+        try{ const r = await window.storage.get(k, false); if(r && r.value) records.push(JSON.parse(r.value)); }catch(e){}
+      }
+      records.sort((a,b) => (b.savedAt||0) - (a.savedAt||0));
+      if(records.length === 0){ listEl.innerHTML = '<div class="empty-state">'+t('historyEmpty')+'</div>'; return; }
+      listEl.innerHTML = records.map(r => {
+        const scoreText = r.affectiveSummary || summarizeScores((r.affective&&r.affective.samples)||[]);
+        return `<div class="history-item">
+          <div class="history-main" data-id="${r.id}">
+            <div class="history-sample">${(r.meta&&r.meta.sampleNo)||t('historyNoName')} ${(r.meta&&r.meta.cupper)?'· '+r.meta.cupper:''}</div>
+            <div class="history-date">${(r.meta&&r.meta.date)||''} ${badge(letters[0],hasPhysicalData(r.physical))}${badge(letters[1],hasDescriptiveData(r.descriptive))}${badge(letters[2],hasAffectiveData(r.affective))}${badge(letters[3],hasExtrinsicData(r.extrinsic))}</div>
+          </div>
+          <div class="history-score">${scoreText}</div>
+          <div class="history-del" data-id="${r.id}">✕</div>
+        </div>`;
+      }).join('');
+      listEl.querySelectorAll('.history-main').forEach(el=>{
+        el.addEventListener('click', ()=>{
+          const rec = records.find(r=>r.id===el.dataset.id);
+          if(rec){
+            state = mergeDeep(defaultState(), rec);
+            if(!state.affective.samples || state.affective.samples.length===0) state.affective.samples = [makeSample('01')];
+            fullRender();
+            window.scrollTo({top:0, behavior:'smooth'});
+            showToast(t('toastLoaded').replace('{id}', (rec.meta&&rec.meta.sampleNo)||rec.id.slice(-4)));
+          }
+        });
+      });
+      listEl.querySelectorAll('.history-del').forEach(btn=>{
+        btn.addEventListener('click', async (e)=>{
+          e.stopPropagation();
+          if(!btn.classList.contains('confirm')){
+            btn.classList.add('confirm'); btn.textContent='✔';
+            setTimeout(()=>{ btn.classList.remove('confirm'); btn.textContent='✕'; }, 2500);
+            return;
+          }
+          try{
+            await window.storage.delete('cva:'+btn.dataset.id, false);
+            if(state.id === btn.dataset.id){ state.id = null; }
+            loadHistory();
+          }catch(err){ showToast(t('toastDeleteError')); }
+        });
+      });
+    }catch(err){ listEl.innerHTML = '<div class="empty-state">'+t('historyLoadError')+'</div>'; }
+  }
+
+  // ---------- Language switching ----------
+  async function loadLangPref(){
+    try{
+      const r = await window.storage.get('settings:lang', false);
+      if(r && r.value && (r.value==='vi'||r.value==='en')) lang = r.value;
+    }catch(e){}
+  }
+  async function setLang(newLang){
+    if(lang===newLang) return;
+    lang = newLang;
+    document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.dataset.lang===lang));
+    applyI18nStatic();
+    buildPhysicalPanel(); buildDescriptivePanel(); buildExtrinsicPanel();
+    attachPanelInputListeners();
+    fullRender();
+    loadHistory();
+    try{ await window.storage.set('settings:lang', lang, false); }catch(e){}
+  }
+
+  function attachShellListeners(){
+    document.querySelectorAll('.tab').forEach(tab=>{ tab.addEventListener('click', ()=> switchTab(tab.dataset.tab)); });
+    document.querySelectorAll('.mode-btn').forEach(btn=>{ btn.addEventListener('click', ()=> setReviewMode(btn.dataset.mode)); });
+    document.querySelectorAll('.lang-btn').forEach(btn=>{ btn.addEventListener('click', ()=> setLang(btn.dataset.lang)); });
+    wireGuideToggle('affective');
+    document.getElementById('legendToggle').addEventListener('click', ()=>{
+      document.getElementById('legendBody').classList.toggle('open');
+      document.getElementById('legendChevron').classList.toggle('open');
+    });
+    document.getElementById('prevStepBtn').addEventListener('click', ()=>{
+      if(state.affective.step>0){ state.affective.step--; renderStepNav(); renderStepContent(); }
+    });
+    document.getElementById('nextStepBtn').addEventListener('click', ()=>{
+      if(state.affective.step<STEPS.length-1){ state.affective.step++; renderStepNav(); renderStepContent(); }
+    });
+    document.getElementById('saveBtn').addEventListener('click', saveSample);
+    document.getElementById('newBtn').addEventListener('click', ()=>{
+      state = defaultState();
+      fullRender();
+      showToast(t('toastNewSession'));
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+  }
+
+  // ---------- Init ----------
+  await loadLangPref();
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active', b.dataset.lang===lang));
+  applyI18nStatic();
+  buildPhysicalPanel();
+  buildDescriptivePanel();
+  buildExtrinsicPanel();
+  attachMetaListeners();
+  attachPanelInputListeners();
+  attachShellListeners();
+  fullRender();
+  loadHistory();
+})();
+</script>
+
+</body>
+</html>
